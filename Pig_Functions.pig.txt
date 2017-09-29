@@ -1,0 +1,28 @@
+A = LOAD 'HADOOP/wordcount.csv' USING PigSTorage(',') as (a:chararray,b:chararray, c:int);
+
+TOKENIZE:
+B = foreach A generate TOKENIZE((chararray)$0) as word;
+DUMP B;
+
+FLATTEN:
+
+C = foreach B generate FLATTEN($0) as word;
+DUMP C;
+
+CONCAT:
+
+D = foreach A generate CONCAT($0,$1) as word;
+DUMP  D;
+
+MAX:
+E = GROUP A ALL;
+F = FOREACH E GENERATE MAX(A.c)
+DUMP F;
+
+MIN:
+E = GROUP A ALL;
+F = FOREACH E GENERATE MAX(A.c)
+DUMP F;
+
+STORE:
+STORE student INTO ' hdfs://localhost:9000/pig_Output/ ' USING PigStorage (',');
